@@ -77,15 +77,15 @@ footer { text-align: center; padding: 2rem; font-size: 13px; color: #999; border
     <div class="form-subtitle">Takes 2 minutes. Start earning today.</div>
     <div class="field">
       <label>First name</label>
-      <input type="text" id="fname" placeholder="Your first name" />
+      <input type="text" id="fname" name="first_name" placeholder="Your first name" />
     </div>
     <div class="field">
       <label>Email address</label>
-      <input type="email" id="email" placeholder="your@email.com" />
+      <input type="email" id="email" name="email" placeholder="your@email.com" />
     </div>
     <div class="field">
       <label>What type of pet do you have?</label>
-      <select id="pet">
+      <select id="pet" name="pet_type">
         <option value="">Select pet type</option>
         <option>Dog</option>
         <option>Cat</option>
@@ -95,7 +95,7 @@ footer { text-align: center; padding: 2rem; font-size: 13px; color: #999; border
     </div>
     <div class="field">
       <label>City and state</label>
-      <input type="text" id="location" placeholder="e.g. Detroit, MI" />
+      <input type="text" id="location" name="location" placeholder="e.g. Detroit, MI" />
     </div>
     <button class="submit-btn" onclick="handleSubmit()">Join the Panel — It's Free</button>
     <p class="trust">Your information is never sold. You will only hear from us when a paid opportunity matches your profile.</p>
@@ -134,7 +134,7 @@ footer { text-align: center; padding: 2rem; font-size: 13px; color: #999; border
 </div>
 <footer>© 2026 PawPanel. All rights reserved.</footer>
 <script>
-function handleSubmit() {
+async function handleSubmit() {
   var fname = document.getElementById('fname').value.trim();
   var email = document.getElementById('email').value.trim();
   var pet = document.getElementById('pet').value;
@@ -143,6 +143,12 @@ function handleSubmit() {
     alert('Please fill in all fields to continue.');
     return;
   }
+  var data = { first_name: fname, email: email, pet_type: pet, location: location };
+  await fetch('https://formspree.io/f/xjgjglqa', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
   document.getElementById('form-view').style.display = 'none';
   document.getElementById('success-view').style.display = 'block';
 }
